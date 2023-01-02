@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public class Game {
 
     @Autowired
-    private GameRepository repository;
+    private GameRepository GameRepo;
 
     @GetMapping
     public String olaMundo(){

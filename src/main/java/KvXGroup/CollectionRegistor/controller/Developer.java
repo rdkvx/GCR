@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.RestController;
 public class Developer {
 
     @Autowired
-    private DeveloperRepository repository;
+    private DeveloperRepository DeveloperRepo;
 }

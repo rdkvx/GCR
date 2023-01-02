@@ -17,22 +17,34 @@ import java.util.Optional;
 public class Producer {
 
     @Autowired
-    private ProducerRepository repository;
+    public ProducerRepository ProducerRepo;
 
     @GetMapping
     public Page<ProducerToList> getProducers(@PageableDefault(size = 10, sort = {"name"}) Pageable pagination){
-        var obj = repository.findAll(pagination).map(ProducerToList::new);
-        return obj;
+        return ProducerRepo.findAll(pagination).map(ProducerToList::new);
+
     }
 
     @GetMapping("/{id}")
     public Optional<KvXGroup.CollectionRegistor.producer.Producer> getProducersByID(@PathVariable Long id){
-       return repository.findById(id);
+       return ProducerRepo.findById(id);
     }
 
     @PostMapping
     @Transactional
     public void createProducer(@RequestBody ProducerData request){
-        repository.save(new KvXGroup.CollectionRegistor.producer.Producer(request));
+        ProducerRepo.save(new KvXGroup.CollectionRegistor.producer.Producer(request));
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public void updateProducer(@RequestBody ProducerData request, @PathVariable Long id){
+        var producer = ProducerRepo.getReferenceById(id);
+        producer.updateProducer(request);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteProducer(@PathVariable Long id){
+        ProducerRepo.deleteById(id);
     }
 }
