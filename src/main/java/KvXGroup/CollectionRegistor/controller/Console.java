@@ -7,12 +7,10 @@ import KvXGroup.CollectionRegistor.producer.Producer;
 import KvXGroup.CollectionRegistor.producer.ProducerRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/console")
@@ -25,8 +23,12 @@ public class Console {
     private ProducerRepository ProducerRepo;
 
     @GetMapping
-    public Page<ConsoleToList> getConsoles(@PageableDefault(size = 10, sort = {"id"})Pageable pagination){
-        return ConsoleRepo.findAll(pagination).map(ConsoleToList::new);
+    //public Page<ConsoleToList> getConsoles(@PageableDefault(size = 10, sort = {"id"})Pageable pagination){
+    public List<ConsoleToList> getConsoles(){
+        return ConsoleRepo.getAll();
+
+        //return ConsoleRepo.findAll(pagination).map(ConsoleToList::new);
+
     }
 
     @GetMapping("/{id}")
