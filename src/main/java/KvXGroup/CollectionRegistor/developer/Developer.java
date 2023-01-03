@@ -22,4 +22,14 @@ public class Developer {
     @NotNull
     private String name;
 
+    public Developer(DeveloperData dd){
+        this.name = dd.name();
+    }
+
+    public void updateDeveloper(DeveloperData dd){
+        if(dd.name() != null){
+            this.name = dd.name();
+        }
+    }
+
 }

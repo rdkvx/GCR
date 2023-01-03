@@ -32,19 +32,24 @@ public class Producer {
 
     @PostMapping
     @Transactional
-    public void createProducer(@RequestBody ProducerData request){
+    public String createProducer(@RequestBody ProducerData request){
         ProducerRepo.save(new KvXGroup.CollectionRegistor.producer.Producer(request));
+        return request.name()+" producer registered successfully";
     }
 
     @PutMapping("/{id}")
     @Transactional
-    public void updateProducer(@RequestBody ProducerData request, @PathVariable Long id){
+    public String updateProducer(@RequestBody ProducerData request, @PathVariable Long id){
         var producer = ProducerRepo.getReferenceById(id);
         producer.updateProducer(request);
+
+        return request.name()+" producer updated successfully";
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProducer(@PathVariable Long id){
+    public String deleteProducer(@PathVariable Long id){
         ProducerRepo.deleteById(id);
+
+        return "producer deleted successfully";
     }
 }

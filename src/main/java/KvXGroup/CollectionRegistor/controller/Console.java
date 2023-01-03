@@ -23,12 +23,8 @@ public class Console {
     private ProducerRepository ProducerRepo;
 
     @GetMapping
-    //public Page<ConsoleToList> getConsoles(@PageableDefault(size = 10, sort = {"id"})Pageable pagination){
     public List<ConsoleToList> getConsoles(){
         return ConsoleRepo.getAll();
-
-        //return ConsoleRepo.findAll(pagination).map(ConsoleToList::new);
-
     }
 
     @GetMapping("/{id}")
