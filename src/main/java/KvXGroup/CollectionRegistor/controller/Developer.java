@@ -3,6 +3,7 @@ package KvXGroup.CollectionRegistor.controller;
 import KvXGroup.CollectionRegistor.developer.DeveloperData;
 import KvXGroup.CollectionRegistor.developer.DeveloperRepository;
 import KvXGroup.CollectionRegistor.developer.DeveloperToList;
+import KvXGroup.CollectionRegistor.exception.ResourceNotFoundException;
 import com.electronwill.nightconfig.core.conversion.Path;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,21 @@ public class Developer {
 
     @GetMapping
     public Page<DeveloperToList> getDevelopers(@PageableDefault(size = 10, sort = {"name"})Pageable pagination){
-        return DeveloperRepo.findAll(pagination).map(DeveloperToList::new);
+        var developerRaw = DeveloperRepo.findAll(pagination).map(DeveloperToList::new);
+        if(developerRaw.isEmpty()){
+            throw new ResourceNotFoundException(String.format("failed to list developer"));
+        }
+        return developerRaw;
     }
 
     @GetMapping({"/{id}"})
     public Optional<KvXGroup.CollectionRegistor.developer.Developer> getDeveloperById(@PathVariable Long id){
-        return DeveloperRepo.findById(id);
+        var developerRaw = DeveloperRepo.findById(id);
+        if(developerRaw.isEmpty()){
+            throw new ResourceNotFoundException(String.format("developer id %s not found", id));
+        }
+
+        return developerRaw;
     }
 
     @PostMapping

@@ -4,6 +4,7 @@ import KvXGroup.CollectionRegistor.console.Console;
 import KvXGroup.CollectionRegistor.console.ConsoleRepository;
 import KvXGroup.CollectionRegistor.developer.Developer;
 import KvXGroup.CollectionRegistor.developer.DeveloperRepository;
+import KvXGroup.CollectionRegistor.exception.ResourceNotFoundException;
 import KvXGroup.CollectionRegistor.game.GameData;
 import KvXGroup.CollectionRegistor.game.GameRepository;
 import KvXGroup.CollectionRegistor.game.GameToList;
@@ -29,16 +30,48 @@ public class Game {
     @Autowired
     private ConsoleRepository ConsoleRepo;
 
-    @GetMapping
-    public List<GameToList> getGames(){
-        return GameRepo.getAll();
-    }
+   @GetMapping
+   public List<GameToList> getGames(){
+        var gameList = GameRepo.getAll();
+        if(gameList.size() == 0){
+            throw new ResourceNotFoundException(String.format("failed to list games"));
+        }
 
-    @GetMapping("/{id}")
+       return gameList;
+   }
+   /* @GetMapping("/{id}")
     public KvXGroup.CollectionRegistor.game.Game getGameByID(@PathVariable Long id){
         var gameRaw = GameRepo.findById(id);
         var consoleRaw = ConsoleRepo.findById(gameRaw.get().getConsole().getId());
         var developerRaw = DeveloperRepo.findById(gameRaw.get().getDeveloper().getId());
+
+        Console c = new Console();
+        var console = c.OptionalToConsole(consoleRaw);
+
+        Developer d = new Developer();
+        var developer = d.OptionalToDeveloper(developerRaw);
+
+        KvXGroup.CollectionRegistor.game.Game g = new KvXGroup.CollectionRegistor.game.Game(gameRaw, console, developer);
+
+        return g;
+    }*/
+
+    @GetMapping("/{id}")
+    public KvXGroup.CollectionRegistor.game.Game getGameByID(@PathVariable Long id){
+        var gameRaw = GameRepo.findById(id);
+        if(gameRaw.isEmpty()){
+            throw new ResourceNotFoundException(String.format("game id %s not found", id));
+        }
+
+        var consoleRaw = ConsoleRepo.findById(gameRaw.get().getConsole().getId());
+        if(consoleRaw.isEmpty()){
+            throw new ResourceNotFoundException(String.format("console id %s not found", gameRaw.get().getConsole().getId()));
+        }
+
+        var developerRaw = DeveloperRepo.findById(gameRaw.get().getDeveloper().getId());
+        if(developerRaw.isEmpty()){
+            throw new ResourceNotFoundException(String.format("developer id %s not found", gameRaw.get().getDeveloper().getId()));
+        }
 
         Console c = new Console();
         var console = c.OptionalToConsole(consoleRaw);
