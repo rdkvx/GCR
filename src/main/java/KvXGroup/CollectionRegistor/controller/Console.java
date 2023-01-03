@@ -46,7 +46,7 @@ public class Console {
 
     @PostMapping
     @Transactional
-    public void createConsole(@RequestBody ConsoleData request){
+    public String createConsole(@RequestBody ConsoleData request){
         var prodRaw = ProducerRepo.findById(request.producerId());
 
         Producer p = new Producer();
@@ -55,7 +55,26 @@ public class Console {
         KvXGroup.CollectionRegistor.console.Console c = new KvXGroup.CollectionRegistor.console.Console(request, prod);
 
         ConsoleRepo.save(c);
+
+        return "console "+c.getName()+" registered successfully";
     }
 
+    @PutMapping("/{id}")
+    @Transactional
+    public String updateConsole(@PathVariable Long id, @RequestBody ConsoleData request){
+        var console = ConsoleRepo.getReferenceById(id);
+        console.updateConsole(request);
 
+        var response = console.getName()+" updated successfully";
+        return response;
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public String deleteConsole(@PathVariable Long id){
+
+        ConsoleRepo.deleteById(id);
+
+        return "console deleted successfully";
+    }
 }

@@ -8,6 +8,4 @@ public record ConsoleToList(Long id, String name, Producer producer, Date releas
     public ConsoleToList(Console c){
         this(c.getId(), c.getName(), c.getProducer(), c.getReleaseDate(), c.getBuyDate(), c.getOwn());
     }
-
-
 }

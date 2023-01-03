@@ -62,4 +62,22 @@ public class Console {
         this.own = c.get().getOwn();
         this.producer = prod;
     }
+
+    public void updateConsole(ConsoleData cd){
+        if(cd.name() != null){
+            this.name = cd.name();
+        }
+        if(cd.releaseDate() != null){
+            this.releaseDate = cd.releaseDate();
+        }
+        if(cd.buyDate() != null){
+            this.buyDate = cd.buyDate();
+        }
+        if(cd.own() != null){
+            this.own = cd.own();
+        }
+        if(cd.producerId() != null){
+            this.producer.setId(cd.producerId());
+        }
+    }
 }
