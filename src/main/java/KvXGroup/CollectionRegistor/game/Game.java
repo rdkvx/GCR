@@ -67,7 +67,7 @@ public class Game {
     }
 
     public void updateGame(GameData gd){
-        if(gd.name() != null){
+        if(gd.name() != ""){
             this.name = gd.name();
         }
         if(gd.consoleId() != null){

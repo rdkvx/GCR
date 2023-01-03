@@ -7,6 +7,7 @@ import KvXGroup.CollectionRegistor.developer.DeveloperRepository;
 import KvXGroup.CollectionRegistor.game.GameData;
 import KvXGroup.CollectionRegistor.game.GameRepository;
 import KvXGroup.CollectionRegistor.game.GameToList;
+import com.electronwill.nightconfig.core.conversion.Path;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -69,11 +70,22 @@ public class Game {
     }
 
     @PutMapping("/{id}")
+    @Transactional
     public String updateGame(@PathVariable Long id, @RequestBody GameData request){
         var game = GameRepo.getReferenceById(id);
         game.updateGame(request);
 
         var response = game.getName()+" updated successfully";
+        return response;
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public String deleteGame(@PathVariable Long id){
+        GameRepo.deleteById(id);
+
+        var response = "game deleted successfully";
+
         return response;
     }
 
