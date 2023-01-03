@@ -1,15 +1,17 @@
 package KvXGroup.CollectionRegistor.developer;
 
+import KvXGroup.CollectionRegistor.game.Game;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.Optional;
+import java.util.Set;
 
 @Table(name = "developer")
 @Entity(name = "Developer")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -22,6 +24,9 @@ public class Developer {
     @NotNull
     private String name;
 
+    @OneToMany(mappedBy = "developer")
+    private Set<Game> game;
+
     public Developer(DeveloperData dd){
         this.name = dd.name();
     }
@@ -30,6 +35,15 @@ public class Developer {
         if(dd.name() != null){
             this.name = dd.name();
         }
+    }
+
+    public Developer OptionalToDeveloper(Optional<Developer> developer){
+        Developer dev = new Developer();
+        dev.setId(developer.get().getId());
+        dev.setName(developer.get().getName());
+        dev.setGame(developer.get().getGame());
+
+        return dev;
     }
 
 }

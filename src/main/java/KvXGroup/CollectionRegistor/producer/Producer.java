@@ -1,8 +1,6 @@
 package KvXGroup.CollectionRegistor.producer;
 
 import KvXGroup.CollectionRegistor.console.Console;
-import KvXGroup.CollectionRegistor.console.ConsoleToList;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

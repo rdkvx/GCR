@@ -1,6 +1,7 @@
 package KvXGroup.CollectionRegistor.console;
 
 
+import KvXGroup.CollectionRegistor.game.Game;
 import KvXGroup.CollectionRegistor.producer.Producer;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -10,6 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.Set;
 
 @Table(name = "console")
 @Entity(name = "Console")
@@ -39,11 +41,14 @@ public class Console {
     @NotNull
     private Boolean own;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "producerid", nullable = false)
     @Getter
     @Setter
     private Producer producer;
+
+    @OneToMany(mappedBy = "console")
+    private Set<Game> game;
 
 
     public Console(ConsoleData cd, Producer prod){
@@ -79,5 +84,16 @@ public class Console {
         if(cd.producerId() != null){
             this.producer.setId(cd.producerId());
         }
+    }
+
+    public Console OptionalToConsole(Optional<Console> console){
+        Console c = new Console();
+        c.setId(console.get().getId());
+        c.setName(console.get().getName());
+        c.setReleaseDate(console.get().getReleaseDate());
+        c.setBuyDate(console.get().getBuyDate());
+        c.setOwn(console.get().getOwn());
+
+        return c;
     }
 }
